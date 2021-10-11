@@ -28,6 +28,9 @@ class Event extends CI_Controller {
         }
 
         if($this->form_validation->run()){
+            
+            // die; 
+
             $save_data = array(
                 'title' => $this->input->post("title"),
                 'start_date' => date('Y-m-d', strtotime($this->input->post("start_date"))),
@@ -40,8 +43,49 @@ class Event extends CI_Controller {
                 'repeat_on_3' => $this->input->post("repeat_on_3")
             );
 
-            $insert_data = $this->Event_Model->save($save_data);
-            if($insert_data){
+             $event_id = $this->Event_Model->save($save_data); 
+            if($event_id){
+
+                $start_date = date('Y-m-d', strtotime($this->input->post("start_date")));
+                $end_date = date('Y-m-d', strtotime($this->input->post("end_date")));
+
+                if($this->input->post('recurrence_type') == 1){
+                    $begin = new DateTime($start_date);
+                    $end = new DateTime($end_date);
+
+                    if($this->input->post("repeat_1") == 1 && $this->input->post("repeat_2") == 1){
+                        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                            // echo $i->format("Y-m-d");
+                            // echo "<br>";
+                            
+                            $calendar_data = array(
+                                'event_id' => $event_id,
+                                'event_date' => $i->format("Y-m-d")
+                            );
+                            $this->Event_Model->saveCalendar($calendar_data);    
+                        }
+                    }else if($this->input->post("repeat_1") == 1 && $this->input->post("repeat_2") == 1){
+
+                    }
+                    
+                }else{
+                    $begin = new DateTime($start_date);
+                    $end = new DateTime($end_date);
+
+                    if($this->input->post("repeat_on_1") == 1 && $this->input->post("repeat_on_2") == 1  && $this->input->post("repeat_on_3") == 1){
+                        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+                            // echo $i->format("Y-m-d");
+                            // echo "<br>";
+                            
+                            $calendar_data = array(
+                                'event_id' => $event_id,
+                                'event_date' => $i->format("Y-m-d")
+                            );
+                            $this->Event_Model->saveCalendar($calendar_data);    
+                        }
+                    }
+            }
+
                 $this->session->set_flashdata("success","Event created successfully");
                 redirect("event",'refresh');
             }
@@ -103,7 +147,7 @@ class Event extends CI_Controller {
     public function view($id)
 	{
         $eventInfo = $this->Event_Model->eventView($id);
-		$this->load->view('event_edit',['eventInfo' => $eventInfo]);
+		$this->load->view('event_view',['eventInfo' => $eventInfo,'event_id' => $id]);
 	}
 
     public function delete($id)

@@ -6,7 +6,14 @@ class Event_model extends CI_Model {
 
     public function save($data)
     {
-        return $this->db->insert('events', $data);
+        $this->db->insert('events', $data);
+        return $this->db->insert_id();
+    }
+
+    public function saveCalendar($data)
+    {
+        $this->db->insert('event_calendar', $data);
+        return $this->db->insert_id();
     }
 
     public function eventList()

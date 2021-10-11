@@ -140,6 +140,6 @@ if (!function_exists('count_event_calendar'))
         $ci->db->from('event_calendar');
         $ci->db->where('event_id', $id);
         $query = $ci->db->get();
-        return $query->count_all_result();
+        return $query->num_rows();
     }
 }

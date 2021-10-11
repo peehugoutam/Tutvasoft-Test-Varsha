@@ -132,32 +132,20 @@
                      <th>Day Name</th>
                   </tr>
                   <?php  
-                     if(!empty($event_list)){ 
+                     if(!empty($eventInfo)){ 
                         $sno = 1;
-                        foreach($event_list as $val){ 
+                        foreach($eventInfo as $val){ 
                   ?>
                   <tr>
                      <td><?= $sno ?></td>
-                     <td><?= $val['title']; ?></td>
-                     <td><?= $val['start_date']." to ".$val['end_date']; ?></td>
+                     <td><?= $val['event_date']; ?></td>
                      <td><?= $val['recurrence_type'] == 1 ? get_repeat1($val['repeat_1'])." ".get_repeat2($val['repeat_2']) : get_repeat_on1($val['repeat_on_1'])." ".get_repeat_on1($val['repeat_on_2'])." ".get_repeat_on1($val['repeat_on_3']); ?></td>
-                     <td>
-                        <div class="text-center">
-                            <a href="<?php echo site_url('event/edit/'.$val['id']); ?>">
-                                Edit
-                            </a>
-                            <a href="<?php echo site_url('event/index/'.$val['id']); ?>">
-                                view
-                            </a>
-                            <a onClick="return confirm('Are you sure you want to delete?')" href="<?php echo site_url('event/delete/'.$val['id']); ?>">
-                                Delete
-                            </a>
-                        </div>
-                     </td>
+                     
                   </tr>
                   <?php $sno++; }} ?>
                </table>
             </div>
+            <p>Total recurrence event count = <?= count_event_calendar($event_id); ?></p>
          </div>
       </div>
    </body>

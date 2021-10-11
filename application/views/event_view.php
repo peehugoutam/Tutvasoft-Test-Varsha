@@ -124,6 +124,7 @@
             <div class="form-group">
                <a href="<?php echo site_url('event/list');?>" class="btn btn-success btn-lg btn-block" style="color:#fff;">Event List</a>
             </div>
+            <p>Event Name = <?= $eventInfo['title']; ?></p>
             <div class="form-group">
                <table  id="example" class="display" style="width:100%">
                   <tr>
@@ -132,9 +133,9 @@
                      <th>Day Name</th>
                   </tr>
                   <?php  
-                     if(!empty($eventInfo)){ 
+                     if(!empty($eventCalenderInfo)){ 
                         $sno = 1;
-                        foreach($eventInfo as $val){ 
+                        foreach($eventCalenderInfo as $val){ 
                   ?>
                   <tr>
                      <td><?= $sno ?></td>
